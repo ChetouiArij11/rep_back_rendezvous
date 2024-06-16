@@ -1,0 +1,7 @@
+{
+    "editor.wordBasedSuggestions": "matchingDocuments",
+    "cSpell.words": [
+        "gestion",
+        "typeorm"
+    ]
+}

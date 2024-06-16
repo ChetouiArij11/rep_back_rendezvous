@@ -1,0 +1,6 @@
+projectKey=dock_rendezvous_test
+serverUrl=http://localhost:9000
+serverVersion=10.5.1.90531
+dashboardUrl=http://localhost:9000/dashboard?id=dock_rendezvous_test
+ceTaskId=f964c5e8-b132-46a4-bb6f-0340cc024972
+ceTaskUrl=http://localhost:9000/api/ce/task?id=f964c5e8-b132-46a4-bb6f-0340cc024972

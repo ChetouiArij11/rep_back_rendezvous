@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  nodejs-api:
+    image: nodejs-api-rendezvous
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nodejs-api-container_rendezvous_auto
+    depends_on:
+      - db
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "3003:3003"
+    networks:
+      - crud_backend_gestion_rendezvous_default
+
+  db:
+    image: mysql
+    container_name: db-container-rendezvous_jenkins_auto
+    restart: always
+    environment:
+      MYSQL_DATABASE: medirendez
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: root
+    command: --init-file /docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3306:3306"
+    networks:
+      - crud_backend_gestion_rendezvous_default
+    volumes:
+      - crud_backend_gestion_rendezvous_default:/data/db
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+networks:
+  crud_backend_gestion_rendezvous_default:
+    driver: bridge
+
+volumes:
+  crud_backend_gestion_rendezvous_default:

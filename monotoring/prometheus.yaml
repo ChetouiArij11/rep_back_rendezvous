@@ -1,0 +1,9 @@
+global:
+  scrape_interval:     15s # Indique à Prometheus la fréquence à laquelle récupérer les métriques.
+  evaluation_interval: 15s # Contrôle la fréquence à laquelle Prometheus évalue les règles d'alerte.
+
+scrape_configs:
+  - job_name: 'my-service-rendezvous' # Nom du job de récupération de métriques
+    static_configs:
+      - targets: ['192.168.1.16:3003'] # L'adresse et le port de votre service
+    metrics_path: /metrics # Chemin où les métriques sont exposées sur votre service

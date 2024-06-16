@@ -1,0 +1,203 @@
+openapi: 3.0.0
+info:
+  title: API de gestion des rendezvous
+  version: 1.0.0
+  description: API permettant de gérer les rendezvous d'une clinique médicale.
+
+servers:
+  - url: http://localhost:3003
+    description: Serveur local
+
+paths:
+  /rendezvous:
+    get:
+      summary: Récupérer tous les rendezvous
+      description: Récupère tous les rendezvous de la base de données.
+      responses:
+        '200':
+          description: Succès de la récupération des rendezvous
+        '500':
+          description: Erreur serveur
+
+  /rendezvous/{id}:
+    get:
+      summary: Récupérer un patient par ID
+      description: Récupère les détails d'un patient en fonction de son ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID du patient à récupérer
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Succès de la récupération du patient
+        '404':
+          description: Patient non trouvé
+        '500':
+          description: Erreur serveur
+
+  
+    put:
+      summary: Mettre à jour un patient
+      description: Met à jour les détails d'un patient existant en fonction de son ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID du patient à mettre à jour
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom:
+                  type: string
+                prenom:
+                  type: string
+                date_de_naissance:
+                  type: string
+                  format: date
+                sexe:
+                  type: string
+                  enum: [homme, femme, autre]
+                adresse_email:
+                  type: string
+                numero_de_telephone:
+                  type: string
+                adresse:
+                  type: string
+                autres_informations_medicales:
+                  type: string
+                cin:
+                  type: string
+      responses:
+        '200':
+          description: Patient mis à jour avec succès
+        '404':
+          description: Patient non trouvé
+        '500':
+          description: Erreur serveur
+
+    delete:
+      summary: Supprimer un patient par ID
+      description: Supprime un patient en fonction de son ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID du patient à supprimer
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Patient supprimé avec succès
+        '404':
+          description: Patient non trouvé
+        '500':
+          description: Erreur serveur
+
+  /rendezvous/ajout:
+    post:
+      summary: Ajouter un nouveau patient
+      description: Ajoute un nouveau patient à la base de données.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom:
+                  type: string
+                prenom:
+                  type: string
+                date_de_naissance:
+                  type: string
+                  format: date
+                sexe:
+                  type: string
+                  enum: [homme, femme, autre]
+                adresse_email:
+                  type: string
+                numero_de_telephone:
+                  type: string
+                adresse:
+                  type: string
+                autres_informations_medicales:
+                  type: string
+                cin:
+                  type: string
+      responses:
+        '200':
+          description: Patient ajouté avec succès
+          content:
+            application/json:
+              example:
+                message: "Patient ajouté avec succès."
+                patient:
+                  nom: "John"
+                  prenom: "Doe"
+                  date_de_naissance: "1990-01-01"
+                  sexe: "homme"
+                  adresse_email: "john.doe@example.com"
+                  numero_de_telephone: "1234567890"
+                  adresse: "123 rue Principale"
+                  autres_informations_medicales: "Aucune"
+                  cin: "1234567890ABC"
+                  _id: "65c8172b59a0181f65224090"
+                  createdAt: "2024-02-13T00:00:00.000Z"
+                  updatedAt: "2024-02-13T00:00:00.000Z"
+                  __v: 0
+        '400':
+          description: Les données requises ne sont pas fournies
+          content:
+            application/json:
+              example:
+                message: "Tous les champs sont obligatoires."
+        '500':
+          description: Erreur interne du serveur
+          content:
+            application/json:
+              example:
+                message: "Erreur interne du serveur."
+
+  /rendezvous/search/patient/{cin}:
+    get:
+      summary: Rechercher un patient par CIN
+      parameters:
+        - in: path
+          name: cin
+          required: true
+          description: Numéro de CIN du patient à rechercher
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: ID du patient
+                  nom:
+                    type: string
+                    description: Nom du patient
+                  prenom:
+                    type: string
+                    description: Prénom du patient
+                  cin:
+                    type: string
+                    description: Numéro de CIN du patient
+        '404':
+          description: Patient non trouvé
+        '500':
+          description: Erreur interne du serveur
