@@ -79,11 +79,7 @@ pipeline {
                 }
             }
         }
-<<<<<<< HEAD
-        stage('Monitoring') {
-=======
         stage('Monitoring project') {
->>>>>>> 69a1e5c ( version final de jenkins file)
             steps {
                 script {
                     bat '''
