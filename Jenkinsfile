@@ -84,7 +84,7 @@ pipeline {
                 script {
                     bat '''
                     cd monotoring
-                    docker-compose up
+                    docker-compose up -d
                     '''
                 }
             }
