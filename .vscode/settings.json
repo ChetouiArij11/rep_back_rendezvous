@@ -3,5 +3,9 @@
     "cSpell.words": [
         "gestion",
         "typeorm"
-    ]
+    ],
+    "sonarlint.connectedMode.project": {
+        "connectionId": "http://localhost:9000",
+        "projectKey": "dock_rendezvous_test"
+    }
 }
