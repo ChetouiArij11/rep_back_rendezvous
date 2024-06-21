@@ -60,11 +60,11 @@ const corsOptions = {
   methods: 'GET,POST,PUT,DELETE', // Méthodes HTTP autorisées
   allowedHeaders: 'Content-Type, Authorization', // En-têtes autorisés
 };
-// Middleware pour gérer les requêtes liées aux rendezvouss
+
 app.use(cors(corsOptions));
 app.use('/rendezvous', rendezvousRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-// Port d'écoute du serveur
+
 const PORT = 3003;
 
 
