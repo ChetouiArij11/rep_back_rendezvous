@@ -12,7 +12,7 @@ const cors = require('cors');
 
 connectDatabase([Rendezvous]);
 
-// Create Express app
+
 
 const client = require('prom-client')
 
