@@ -9,7 +9,7 @@ const connectDatabase = require("./config/db");
 const Rendezvous = require("./models/Rendezvous");
 const cors = require('cors');
 
-// Database connection
+
 connectDatabase([Rendezvous]);
 
 // Create Express app
