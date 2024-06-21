@@ -68,4 +68,4 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 const PORT = 3003;
 
 
-module.exports = app; // Ajoutez cette ligne pour exporter votre application express
+module.exports = app; 
