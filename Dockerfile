@@ -1,5 +1,5 @@
 # Stage 1: Build Node.js app
-FROM node:14 AS node
+FROM node:latest AS node
 
 WORKDIR /usr/src/app
 
@@ -15,7 +15,7 @@ COPY . .
 RUN npm rebuild bcrypt --build-from-source
 
 
-FROM node:14 AS final
+FROM node:latest AS final
 
 WORKDIR /usr/src/app
 
