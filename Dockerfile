@@ -1,5 +1,5 @@
 # Stage 1: Build Node.js app
-FROM node:latest as node
+FROM node:14 AS node
 
 WORKDIR /usr/src/app
 
