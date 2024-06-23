@@ -15,7 +15,7 @@ COPY . .
 RUN npm rebuild bcrypt --build-from-source
 
 # Stage 2: Final image with only Node.js runtime
-FROM node:latest as final
+FROM node:latest AS final
 
 WORKDIR /usr/src/app
 
