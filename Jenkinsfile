@@ -49,15 +49,15 @@ pipeline {
             }
         }
 
-        // stage('SonarQube test') {
-        //     steps {
-        //         script {
-        //             withSonarQubeEnv('SonarQube Test') { 
-        //                 bat 'npm run sonarqube'
-        //             }
-        //         }
-        //     }
-        // }
+        stage('SonarQube test') {
+            steps {
+                script {
+                    withSonarQubeEnv('SonarQube Test') { 
+                        bat 'npm run sonarqube'
+                    }
+                }
+            }
+        }
         stage('Deploy with kubectl') {
             steps {
                 script {
