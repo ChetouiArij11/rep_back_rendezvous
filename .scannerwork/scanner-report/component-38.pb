@@ -1,1 +1,1 @@
-& 2jsX	hrjest.config.js
+& 2jsXhrmodels/DossierMedical.js

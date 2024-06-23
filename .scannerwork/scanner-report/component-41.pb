@@ -1,1 +1,1 @@
-) 2jsX4hrmodels/Medecin.js
+) 2jsX3hrmodels/Patient.js

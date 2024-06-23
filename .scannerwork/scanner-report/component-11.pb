@@ -1,1 +1,1 @@
- 2jsXêhr controllers/PatientController.js
+ 2jsX\hr#controllers/rendezvousController.js

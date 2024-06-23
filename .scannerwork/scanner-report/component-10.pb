@@ -1,2 +1,2 @@
 
- 2jsXhrconfig/db.js
+ 2jsXêhr controllers/PatientController.js

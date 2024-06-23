@@ -15,7 +15,7 @@ COPY . .
 RUN npm rebuild bcrypt --build-from-source
 
 
-FROM node:latest AS final
+FROM node:14 AS final
 
 WORKDIR /usr/src/app
 

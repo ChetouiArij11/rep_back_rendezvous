@@ -1,1 +1,1 @@
-3 2jsXhrRoutes/PatientRoutes.js
+3 2jsXhrRoutes/rendezvousRoutes.js

@@ -1,50 +1,66 @@
 const { EntitySchema } = require("typeorm");
 
-const Patient = new EntitySchema({
-  name: "Patient",
-  tableName: "patients",
+const Rendezvous = new EntitySchema({
+  name: "Rendezvous",
+  tableName: "rendezvous",
   columns: {
     id: {
       primary: true,
       type: "int",
       generated: true,
     },
-    nom: {
+    patient_id: {
+      type: "int",
+      name: "patient_id",
+    },
+    medecin_id: {
+      type: "int",
+      name: "medecin_id",
+    },
+    nomPatient: {
       type: "varchar",
       length: 255,
+      nullable: true,
+      name: "nom_patient",
     },
-    prenom: {
-      type: "varchar",
-      length: 255,
-    },
-    date_de_naissance: {
-      type: "date",
-    },
-    sexe: {
-      type: "varchar",
-      length: 10,
-    },
-    adresse: {
-      type: "varchar",
-      length: 255,
-    },
-    numero_de_telephone: {
+    numTelephonePatient: {
       type: "varchar",
       length: 15,
+      nullable: true,
+      name: "num_telephone_patient",
     },
-    adresse_email: {
+    dateHeure: {
+      type: "datetime",
+      name: "date_heure",
+    },
+    motif: {
       type: "varchar",
       length: 255,
-    },
-    autres_informations_medicales: {
-      type: "text",
       nullable: true,
     },
-    cin: {
+    statut: {
       type: "varchar",
-      length: 8,
+      length: 20,
+    },
+    patientEmail: {
+      type: "varchar",
+      length: 255,
+      nullable: true,
+      name: "patient_email",
+    },
+  },
+  relations: {
+    patient: {
+      type: "one-to-many",
+      target: "Patient", // Assurez-vous que le nom de l'entité est correct
+      joinColumn: { name: "patient_id" },
+    },
+    medecin: {
+      type: "one-to-many",
+      target: "Medecin", // Assurez-vous que le nom de l'entité est correct
+      joinColumn: { name: "medecin_id" },
     },
   },
 });
 
-module.exports = Patient;
+module.exports = Rendezvous;

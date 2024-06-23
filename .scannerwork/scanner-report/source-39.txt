@@ -1,19 +1,38 @@
 const { EntitySchema } = require("typeorm");
 
-const DossierMedical = new EntitySchema({
-  name: "DossierMedical",
-  tableName: "dossier_medical",
+const FicheMedicale = new EntitySchema({
+  name: "FicheMedicale",
+  tableName: "fichesmedicales",
   columns: {
     id: {
       primary: true,
       type: "int",
       generated: true,
     },
-    id_patient: {
+    patient_id: {
       type: "int",
     },
-    date_creation: {
-      type: "date",
+    medecin_id: {
+      type: "int",
+    },
+    rendezvous_id: {
+      type: "int",
+    },
+    medicaments: {
+      type: "text",
+      nullable: true,
+    },
+    recettes: {
+      type: "text",
+      nullable: true,
+    },
+    description: {
+      type: "varchar",
+      length: 255,
+      nullable: true,
+    },
+    id_dossier: {
+      type: "int",
       nullable: true,
     },
   },
@@ -21,9 +40,19 @@ const DossierMedical = new EntitySchema({
     patient: {
       type: "many-to-one",
       target: "Patient",
-      joinColumn: { name: "id_patient" },
+      joinColumn: { name: "patient_id" },
+    },
+    medecin: {
+      type: "many-to-one",
+      target: "Medecin",
+      joinColumn: { name: "medecin_id" },
+    },
+    dossierMedical: {
+      type: "many-to-one",
+      target: "DossierMedical",
+      joinColumn: { name: "id_dossier" },
     },
   },
 });
 
-module.exports = DossierMedical;
+module.exports = FicheMedicale;

@@ -1,91 +1,235 @@
-const { getRepository } = require("typeorm");
-const Rendezvous = require("../models/Rendezvous");
-const express = require('express');
-exports.getAllRendezvous = async (req, res) => {
-  try {
-    const rendezvousRepository = getRepository(Rendezvous);
-    const rendezvous = await rendezvousRepository.find();
-    res.status(200).json(rendezvous);
-  } catch (err) {
-    console.error("Une erreur s'est produite lors de la récupération des rendez-vous :", err);
-    res.status(500).json({ message: "Une erreur s'est produite lors de la récupération des rendez-vous." });
-  }
-};
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-configmap
+  namespace: gestion-rendezvous
+data:
+  init.sql: |
+    -- phpMyAdmin SQL Dump
+    -- version 5.2.1
+    -- https://www.phpmyadmin.net/
+    --
+    -- Hôte : 127.0.0.1
+    -- Généré le : sam. 18 mai 2024 à 15:12
+    -- Version du serveur : 10.4.32-MariaDB
+    -- Version de PHP : 8.2.12
 
-exports.getRendezvousById = async (req, res) => {
-  const id = req.params.id;
-  try {
-    const rendezvousRepository = getRepository(Rendezvous);
-    const rendezvous = await rendezvousRepository.findOne(id);
-    if (!rendezvous) {
-      res.status(404).json({ message: "Rendezvous non trouvé." });
-      return;
-    }
-    res.status(200).json(rendezvous);
-  } catch (err) {
-    console.error("Une erreur s'est produite lors de la récupération du rendez-vous :", err);
-    res.status(500).json({ message: "Une erreur s'est produite lors de la récupération du rendez-vous." });
-  }
-};
+    SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+    SET time_zone = "+00:00";
 
-exports.createRendezvous = async (req, res) => {
-  try {
-    const newRendezvousData = req.body;
-    const rendezvousRepository = getRepository(Rendezvous);
-    const newRendezvous = rendezvousRepository.create(newRendezvousData);
-    await rendezvousRepository.save(newRendezvous);
-    res.status(201).json({ message: "Rendezvous créé avec succès.", rendezvous: newRendezvous });
-  } catch (err) {
-    console.error("Une erreur s'est produite lors de la création du rendez-vous :", err);
-    res.status(500).json({ message: "Une erreur s'est produite lors de la création du rendez-vous." });
-  }
-};
+    /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+    /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+    /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+    /*!40101 SET NAMES utf8mb4 */;
 
-exports.updateRendezvous = async (req, res) => {
-  const id = req.params.id;
-  try {
-    const updatedRendezvousData = req.body;
-    const rendezvousRepository = getRepository(Rendezvous);
-    await rendezvousRepository.update(id, updatedRendezvousData);
-    res.status(200).json({ message: "Rendezvous mis à jour avec succès." });
-  } catch (err) {
-    console.error("Une erreur s'est produite lors de la mise à jour du rendez-vous :", err);
-    res.status(500).json({ message: "Une erreur s'est produite lors de la mise à jour du rendez-vous." });
-  }
-};
+    --
+    -- Base de données : `medirendez`
+    --
 
-exports.deleteRendezvous = async (req, res) => {
-  const id = req.params.id;
-  try {
-    const rendezvousRepository = getRepository(Rendezvous);
-    await rendezvousRepository.delete(id);
-    res.status(200).json({ message: "Rendezvous supprimé avec succès." });
-  } catch (err) {
-    console.error("Une erreur s'est produite lors de la suppression du rendez-vous :", err);
-    res.status(500).json({ message: "Une erreur s'est produite lors de la suppression du rendez-vous." });
-  }
-};
+    -- --------------------------------------------------------
 
-exports.getRendezvousByPatientId = async (req, res) => {
-  const patientId = req.params.patientId;
-  try {
-    const rendezvousRepository = getRepository(Rendezvous);
-    const rendezvous = await rendezvousRepository.find({ where: { patient_id: patientId } });
-    res.status(200).json(rendezvous);
-  } catch (err) {
-    console.error("Une erreur s'est produite lors de la récupération des rendez-vous du patient :", err);
-    res.status(500).json({ message: "Une erreur s'est produite lors de la récupération des rendez-vous du patient." });
-  }
-};
+    --
+    -- Structure de la table `demande`
+    --
 
-exports.getRendezvousByMedecinId = async (req, res) => {
-  const medecinId = req.params.medecinId;
-  try {
-    const rendezvousRepository = getRepository(Rendezvous);
-    const rendezvous = await rendezvousRepository.find({ where: { medecin_id: medecinId } });
-    res.status(200).json(rendezvous);
-  } catch (err) {
-    console.error("Une erreur s'est produite lors de la récupération des rendez-vous du médecin :", err);
-    res.status(500).json({ message: "Une erreur s'est produite lors de la récupération des rendez-vous du médecin." });
-  }
-};
+    CREATE TABLE `demande` (
+      `cin` varchar(100) NOT NULL,
+      `nomcomp` varchar(200) NOT NULL,
+      `email` varchar(200) NOT NULL,
+      `specialite` varchar(200) NOT NULL,
+      `num_telephone` varchar(200) NOT NULL,
+      `num_fixe_cabinet` varchar(200) NOT NULL,
+      `adresse_cabinet` varchar(200) NOT NULL,
+      `id` int(11) NOT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+    --
+    -- Déchargement des données de la table `demande`
+    --
+
+    INSERT INTO `demande` (`cin`, `nomcomp`, `email`, `specialite`, `num_telephone`, `num_fixe_cabinet`, `adresse_cabinet`, `id`) VALUES
+    ('01235897', 'aaa', 'aaaa@g.com', 'Allergologie', '96385214', '78965412', 'rue chtawa', 18),
+    ('14323058', 'Mohamed tababi', 'mohammadtabbaby@gmail.com', 'Chirurgie maxillo-faciale', '99145392', '76111666', 'Sekka rdayef ', 20),
+    ('manar amal', 'chetoui', 'bellaamal21@gmail.com', 'Toxicologie', '55443322', '76589987', 'rue chtawa', 21);
+
+    -- --------------------------------------------------------
+
+    --
+    -- 
+
+    --
+    -- 
+    --
+
+
+
+    -- --------------------------------------------------------
+
+    --
+    --
+    --
+
+    --
+    --
+    --
+
+    -- --------------------------------------------------------
+
+    --
+    -- Structure de la table `medecins`
+    --
+
+    CREATE TABLE `medecins` (
+      `id` int(11) NOT NULL,
+      `nom` varchar(255) NOT NULL,
+      `specialite` varchar(255) NOT NULL,
+      `email` varchar(255) DEFAULT NULL,
+      `adresse_cabinet` varchar(255) DEFAULT NULL,
+      `num_telephone` varchar(15) DEFAULT NULL,
+      `num_fixe_cabinet` varchar(15) DEFAULT NULL,
+      `password` varchar(255) NOT NULL,
+      `cin` varchar(8) NOT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+    --
+    -- Déchargement des données de la table `medecins`
+    --
+
+    INSERT INTO `medecins` (`id`, `nom`, `specialite`, `email`, `adresse_cabinet`, `num_telephone`, `num_fixe_cabinet`, `password`, `cin`) VALUES
+    (3, 'Dr. Dupont', 'Cardiologue', 'dupont@example.com', '456 avenue de la Santé', '0123456789', '9876543210', '00000000', '12345678'),
+    (4, 'karim chebba', 'dentiste ', 'kchabbadr@gmail.com', 'chabba mahdia', '000000000', '00000000', '00000000', '03121459'),
+    (5, 'misawi  adel', 'Généraliste', 'misawi@exemple.com', '7dha carfour', '78987658', '78987658', '00000000', '02581478'),
+    (6, 'Adel jhimi jhimi', 'generaliste', 'adel@exemple.com', 'rue abou kassem chebbi', '98756412', '72654987', '0000000000000000000000', '01236547'),
+    (11, 'doja cat', 'Cardiologue', 'jean.martin@example.com', '123 Rue des Médecins', '+1234567890', '+987654321', '00000000', '03120096'),
+    (12, 'test', 'test', 'ghhyj@gmail.com', 'test', '00000000', '00000000000', '00000000', '00000000'),
+    (13, 'arij chetoui', 'met', 'arijchetoui1@gmail.com', 'chtawa', '58954023', '58954023', '00000000', '09724208'),
+    (14, 'arij chetoui', 'dentiste', 'arijchetoui11@gmail.com', 'tozeur centre ville', '58954023', '76450451', '0000000000', '11111111'),
+    (25, 'kk', 'kkkk', 'kkk', 'rue chtawa', '00000000', 'kkkk', '00000000', '11111111'),
+    (26, 'mohamed tababi ', 'Chirurgie maxillo-faciale', 'mohammadtabbaby@gmail.com', 'sekka rdayef', '96321548', '76478965', '00000000', '14323058'),
+    (27, 'CHETOUI aML MANAR', 'Toxicologie', 'bellaamal21@gmail.com', 'rue chtawa', '55443322', '79654321', '00000000', '09875632');
+
+    -- --------------------------------------------------------
+
+    --
+    -- Structure de la table `patients`
+    --
+
+    CREATE TABLE `patients` (
+      `id` int(11) NOT NULL,
+      `nom` varchar(255) NOT NULL,
+      `prenom` varchar(255) NOT NULL,
+      `date_de_naissance` date NOT NULL,
+      `sexe` varchar(10) NOT NULL,
+      `adresse` varchar(255) NOT NULL,
+      `numero_de_telephone` varchar(15) NOT NULL,
+      `adresse_email` varchar(255) NOT NULL,
+      `autres_informations_medicales` text DEFAULT NULL,
+      `cin` varchar(8) NOT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+    --
+    -- Déchargement des données de la table `patients`
+    --
+
+    INSERT INTO `patients` (`id`, `nom`, `prenom`, `date_de_naissance`, `sexe`, `adresse`, `numero_de_telephone`, `adresse_email`, `autres_informations_medicales`, `cin`) VALUES
+    (1296866, 'tababi ', 'mohamed ', '2023-12-30', 'homme', 'sekka rdayef', '98989877', 'mohammadtabbaby@gmail.com', 'bfjhbgfjesnflbbjkhdsbfbdsk', '12587456'),
+    (1296863, 'chtouu', 'amal', '2024-03-08', 'femme', 'rue chtawa', '55443322', 'bellaamal21@gmail.com', 'vxzvnlvnlkfnvkdzfvnkvdnvkjnvknsdv', '02587452');
+
+    -- --------------------------------------------------------
+
+    --
+    -- Structure de la table `rendezvous`
+    --
+
+    CREATE TABLE `rendezvous` (
+      `id` int(11) NOT NULL,
+      `id_patient` int(11) NOT NULL,
+      `id_medecin` int(11) NOT NULL,
+      `nom_patient` varchar(255) DEFAULT NULL,
+      `num_telephone_patient` varchar(15) DEFAULT NULL,
+      `date_heure` datetime NOT NULL,
+      `motif` text NOT,
+      `statut` varchar(20) NOT NULL,
+      `patient_email` varchar(255) DEFAULT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+    --
+    -- Déchargement des données de la table `rendezvous`
+    --
+
+    INSERT INTO `rendezvous` (`id`, `patient_id`, `medecin_id`, `nom_patient`, `num_telephone_patient`, `date_heure`, `motif`, `statut`, `patient_email`) VALUES
+    (1296948, 1296863, 27, 'karim', '98741258', '2024-05-14 22:13:00', '78541.2', 'Nouveau', 'arijchetoui1@gmail.com'),
+    (1296950, 1296863, 27, 'ammal', '78965412', '2024-05-26 16:15:00', 'qqq', 'Nouveau', 'k.chet@gmail.com');
+
+    -- --------------------------------------------------------
+
+    --
+    -- Index pour les tables déchargées
+    --
+
+    --
+    -- Index pour la table `demande`
+    --
+
+
+    --
+    -- Index pour la table `dossier_medical`
+    --
+
+
+    --
+    -- 
+    --
+
+
+    --
+    -- Index pour la table `medecins`
+    --
+
+
+    --
+    -- Index pour la table `patients`
+    --
+
+
+    --
+    -- Index pour la table `rendezvous`
+    --
+
+
+    --
+    -- AUTO_INCREMENT pour les tables déchargées
+    --
+
+    --
+    -- AUTO_INCREMENT pour la table `demande`
+    --
+
+
+    --
+    -- AUTO_INCREMENT pour la table `dossier_medical`
+    --
+
+
+    --
+    -- 
+    --
+
+
+    --
+    -- AUTO_INCREMENT pour la table `medecins`
+    --
+
+
+    --
+    -- AUTO_INCREMENT pour la table `patients`
+    --
+
+    --
+    -- AUTO_INCREMENT pour la table `rendezvous`
+    --
+
+
+    /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+    /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+    /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
